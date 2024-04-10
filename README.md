@@ -87,7 +87,7 @@ Despite being straightforward in logic, this involves more hassle in implementat
 
 As my [Utility Calculation](https://docs.google.com/document/d/1eGM9wdwd-q3mSFUM2Or-f3A9OrzlW19JUwc0YbGnHS8/edit#heading=h.gxm37gp0vnl9) specifies, we can store all the tasks in one priority queue (Max heap). We will use the priority value as the key for the heap. This method involves checking if the current time is equal to the starting time of non-flexible events and giving them a high priority. Also, if the duration of the maximum of either child node (one of which will be the 2nd highest element) + current_time is less than the starting time of the max_element (the non-flexible event), they still get the high priority.  Here, we either execute a splittable task (half of a task in lower priority) or wait (take an eye rest) until the non-flexible task starts. If we execute a splittable task, we will only run this for the duration:
 
-*starting_time  of non flexible task -current time*
+*starting_time  of non-flexible task -current time*
 
 We then update its time duration attribute but **do not heap pop** the task. We then execute the non-flexible task. Hence, this method also ensures that the non-flexible tasks are executed exactly at their starting point.
 
@@ -103,7 +103,7 @@ Accessing the child nodes would be the best way to solve this issue but we can a
 
 **Working of the Scheduler:**
 
-https://lh7-us.googleusercontent.com/n2oIhhgOz1QZL88S1U1SjnoOyKTR_d455jsP6xm3OouL1QqrftLnxDY_8_bI9h2gBs6jzmEao4PgN4YgqUed05EYccbkd86MM_1IT5G4vJc4cxYZirOFDrbuf4ozGC5cZusIV1vhNM8MCnW3n3zTjbw
+![image](https://github.com/lifee77/Daily_Scheduler/assets/83622253/6f23b2fd-9e3e-461a-9e6a-ceda8d720aab)
 
 **Figure 1.** A flowchart of the daily scheduler. It shows the high-level operations to show the flow but not all the functions involved in the solution.
 
@@ -136,17 +136,19 @@ Note: Failures/Limitations of the implementation are described when describing t
 
 ****The flow of the program in my implementation starts from the run task scheduler function. So, we will start our complexity analysis from there.
 
-https://lh7-us.googleusercontent.com/wPVubsZGjl7ogmwweTzuJzzWxtjoM32ACFsISSiv2idl85J_g87CYYLn2CAuJKF15C_NmeMwXJ85CU1aGKOHDuMGjjS8qpeAtFmNW9nRFMjX8bFZu179iuUL1vR-VyGkIWlBm9AxmwF3SgOMr00YsSM
+![image](https://github.com/lifee77/Daily_Scheduler/assets/83622253/76ab0e9e-5987-4d9b-b98a-8cd038599104)
+
 
 The run_task_scheduler function has a while loop. It iterates through all the elements of the heap. So, this loop has a time complexity of O(n). The while loop calls a function check_unscheduled tasks. We will take a look into this function.
 
-https://lh7-us.googleusercontent.com/LaoepTk3ratluam0psPjbSJSiQEi1bpRrKeu_yvWgGAcksPH6-TLfBtR8Lnn7NT4VxnyudhEDJYm94g0qkF7OTRAfRd24bCy92mLasjVE5-c2l-mCPuGbPO0XO5nRysUB8-Sz7ucKpnbDKhpr05wnks
+![image](https://github.com/lifee77/Daily_Scheduler/assets/83622253/de08983b-73c2-41f0-9828-7f6e4b9b3132)
 
 Since this function will run every time the while loop runs and it has a for loop inside which runs for O(N) time, the scaling for the algorithm so far is O(N^2).
 
 A line after the while loop is defined inside the run_task_scheduler function, get_tasks_ready (another function) is called.
 
-https://lh7-us.googleusercontent.com/44XxxHrrJ4nhtUvg2djohcQUBL14b4pXNxPx744Lk3OpuoWx1Y5tDt-54wwAzl8NytBkcGIojjVU1tYpOW0FFa4lNVujgKZQ5vghsoqraJCwNPWhs3emoewbPnWoMijyJx2xbIp9YJHaStZK5LNcC18
+![image](https://github.com/lifee77/Daily_Scheduler/assets/83622253/8665140e-b509-460a-bdfb-e1543a8f1ebb)
+
 
 This function has two ‘for loops’. But, none of these are nested inside the for loop from the check_unscheduled_tasks function. These two aren’t nested with each other either. Hence, they are still the 2nd order nested loops for the primary run_task_scheduler function. This gives a time complexity of O(N). Then it pushes the tasks back to the heap which takes a time complexity of O(logN). Hence, it has a total time complexity of O(N log N)
 
@@ -165,13 +167,15 @@ Hence, the overall time complexity scaling to run the Scheduler is O(N^2*logN) w
 
 **Experimental Analysis:**
 
-https://lh7-us.googleusercontent.com/usoG-yaoI3BO78SaVfdfqOjLh5Yea0jFDro02dMhq8O_GKnXTRd1dpJ_KTP06V7jwP3YKPWMvKxorIKZoXp9LI8zzTD7qQXD7ImlU-AWcGvICHMrHIQaDjSdgYLrpdPGqqQTsV5yJaJk_Mlt8S4IL38
+![image](https://github.com/lifee77/Daily_Scheduler/assets/83622253/90faa5d5-89ee-411e-985d-7ac1430aae2f)
+
 
 **Figure 2.** *A runtime complexity scaling plot for the Task Scheduler program. The runtime is measured in seconds. The number of tasks are task dictionaries given in each input.*
 
 Theoretically, I got the scaling to be O(N^2 *logN). Considering that we are using heaps, this is not the best scaling. So, I tried experimental analysis by running the using tasks from Input size 1 to 100, and 1 to 1000. I used the random library to assist with this process.
 
-https://lh7-us.googleusercontent.com/snB5cSb3LnOPK1jXi5UmXBBTJpcsBL3MPozOOhrKg0SbjXU7t5NSOP4Abk5zrgQ6apeDfYPlM0ibN28pVkOZhg_eqRu1ZXUwRa3MfszjhNglKqYvyO5B1siXtV-iT56DoAtbot8rGpYz1YIBlfD9AJI
+![image](https://github.com/lifee77/Daily_Scheduler/assets/83622253/800d051f-fd72-4c61-8a02-4b14e87665f3)
+
 
 **Figure 3.** A runtime complexity scaling plot for the Task Scheduler program. The runtime is measured in seconds. The number of tasks are task dictionaries given in each input. The red color indicates the line of best fit and the scatterplot with the blue line is the experimental runtime complexity.
 
